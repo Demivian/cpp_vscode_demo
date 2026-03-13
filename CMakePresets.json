@@ -29,7 +29,11 @@
       "inherits": [ "multi-config-base", "msvc-runtime-base" ],
       "generator": "Ninja Multi-Config",
       "architecture": { "value": "x64", "strategy": "external" },
-      "toolset": { "value": "host=x64,v143", "strategy": "external" }
+      "toolset": { "value": "host=x64,v143", "strategy": "external" },
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "cl.exe",
+        "CMAKE_CXX_COMPILER": "cl.exe"
+      }
     },
 
     {
