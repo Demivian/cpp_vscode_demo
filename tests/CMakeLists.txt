@@ -1,0 +1,19 @@
+add_executable(map3d_synthetic_test
+  map3d_synthetic_test.cpp
+)
+
+target_link_libraries(map3d_synthetic_test PRIVATE core)
+target_compile_features(map3d_synthetic_test PRIVATE cxx_std_14)
+enable_project_warnings(map3d_synthetic_test)
+
+add_test(NAME map3d_synthetic_test COMMAND map3d_synthetic_test)
+
+add_executable(map3d_hwr010_smoke_test
+  map3d_hwr010_smoke_test.cpp
+)
+
+target_link_libraries(map3d_hwr010_smoke_test PRIVATE core)
+target_compile_features(map3d_hwr010_smoke_test PRIVATE cxx_std_14)
+enable_project_warnings(map3d_hwr010_smoke_test)
+
+add_test(NAME map3d_hwr010_smoke_test COMMAND map3d_hwr010_smoke_test)

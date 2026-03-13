@@ -1,0 +1,106 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 24, "patch": 0 },
+
+  "configurePresets": [
+    {
+      "name": "multi-config-base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_CONFIGURATION_TYPES": "Debug;Release;RelWithDebInfo;MinSizeRel",
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/bin",
+        "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/bin",
+        "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/lib"
+      }
+    },
+
+    {
+      "name": "msvc-runtime-base",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
+      }
+    },
+
+    {
+      "name": "msvc-ninja-multi",
+      "displayName": "MSVC + Ninja Multi-Config",
+      "inherits": [ "multi-config-base", "msvc-runtime-base" ],
+      "generator": "Ninja Multi-Config",
+      "architecture": { "value": "x64", "strategy": "external" },
+      "toolset": { "value": "host=x64,v143", "strategy": "external" }
+    },
+
+    {
+      "name": "vs2022-x64",
+      "displayName": "Visual Studio 2022 (x64, .sln)",
+      "inherits": [ "multi-config-base", "msvc-runtime-base" ],
+      "generator": "Visual Studio 17 2022",
+      "architecture": { "value": "x64", "strategy": "set" },
+      "toolset": { "value": "host=x64", "strategy": "set" }
+    },
+
+    {
+      "name": "single-config-base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/bin",
+        "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/bin",
+        "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/lib"
+      }
+    },
+
+    {
+      "name": "gcc-layer",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++"
+      }
+    },
+
+    {
+      "name": "gcc-debug",
+      "displayName": "GCC Debug",
+      "inherits": [ "single-config-base", "gcc-layer" ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "gcc-release",
+      "displayName": "GCC Release",
+      "inherits": [ "single-config-base", "gcc-layer" ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "gcc-relwithdebinfo",
+      "displayName": "GCC RelWithDebInfo",
+      "inherits": [ "single-config-base", "gcc-layer" ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    }
+  ],
+
+  "buildPresets": [
+    { "name": "msvc-debug", "displayName": "MSVC Debug", "configurePreset": "msvc-ninja-multi", "configuration": "Debug" },
+    { "name": "msvc-release", "displayName": "MSVC Release", "configurePreset": "msvc-ninja-multi", "configuration": "Release" },
+    { "name": "msvc-relwithdebinfo", "displayName": "MSVC RelWithDebInfo", "configurePreset": "msvc-ninja-multi", "configuration": "RelWithDebInfo" },
+    { "name": "msvc-minsizerel", "displayName": "MSVC MinSizeRel", "configurePreset": "msvc-ninja-multi", "configuration": "MinSizeRel" },
+
+    { "name": "vs2022-debug", "displayName": "VS2022 Debug (.sln)", "configurePreset": "vs2022-x64", "configuration": "Debug" },
+    { "name": "vs2022-release", "displayName": "VS2022 Release (.sln)", "configurePreset": "vs2022-x64", "configuration": "Release" },
+    { "name": "vs2022-relwithdebinfo", "displayName": "VS2022 RelWithDebInfo (.sln)", "configurePreset": "vs2022-x64", "configuration": "RelWithDebInfo" },
+    { "name": "vs2022-minsizerel", "displayName": "VS2022 MinSizeRel (.sln)", "configurePreset": "vs2022-x64", "configuration": "MinSizeRel" },
+
+    { "name": "gcc-debug", "displayName": "GCC Debug", "configurePreset": "gcc-debug" },
+    { "name": "gcc-release", "displayName": "GCC Release", "configurePreset": "gcc-release" },
+    { "name": "gcc-relwithdebinfo", "displayName": "GCC RelWithDebInfo", "configurePreset": "gcc-relwithdebinfo" }
+  ]
+}
